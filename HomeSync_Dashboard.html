@@ -575,12 +575,12 @@
   let espIP = localStorage.getItem("espIP") || "http://192.168.1.45";
 
   const ipInput = document.getElementById("ipInput");
-  ipInput.value = espIP.replace("http://", "");
+  ipInput.value = espIP.replace("https://", "").replace("http://", "");
 
   function saveIP() {
-    const raw = ipInput.value.trim().replace(/^https?:\/\//, "");
+    const raw = ipInput.value.trim();
     if (!raw) return;
-    espIP = "http://" + raw;
+    espIP = raw.startsWith("http") ? raw : "http://" + raw;
     localStorage.setItem("espIP", espIP);
     showToast("✅ IP saved: " + raw);
   }
@@ -691,6 +691,7 @@
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 
+  // ── Voice Control ──────────────────────────────────────────────
   const micBtn           = document.getElementById("micBtn");
   const voiceStatusLabel = document.getElementById("voiceStatusLabel");
   const heardText        = document.getElementById("heardText");
